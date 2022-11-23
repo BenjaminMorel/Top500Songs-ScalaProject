@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<module external.linked.project.id="top500songs-scalaproject [file:/C:/Users/benja/OneDrive/Documents/HES_SO_Valais_Wallis/Cours/5eme_semestre/635_1_Scala/Top500Songs-ScalaProject/]" external.linked.project.path="$MODULE_DIR$/../.." external.root.project.path="$MODULE_DIR$/../.." external.system.id="SBT" type="JAVA_MODULE" version="4">
-  <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_15">
+<module external.linked.project.id="top500songs-scalaproject [file:/home/ulvbarn/Programming_Workspace/Scala/Top500Songs-ScalaProject/]" external.linked.project.path="$MODULE_DIR$/../.." external.root.project.path="$MODULE_DIR$/../.." external.system.id="SBT" type="JAVA_MODULE" version="4">
+  <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_11">
     <output url="file://$MODULE_DIR$/../../target/scala-3.1.3/classes" />
     <output-test url="file://$MODULE_DIR$/../../target/scala-3.1.3/test-classes" />
     <exclude-output />
