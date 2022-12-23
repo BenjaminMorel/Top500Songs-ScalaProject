@@ -8,16 +8,22 @@ import scala.io.StdIn.readLine
 import scala.util.Random
 
 object Demo {
+
+  // Trait that will be used in our persons class
   trait person {
     val name: String
   }
 
+  // Producer class that extends Person
   class Producer(val name: String) extends person
 
+  // Writer class that extends Person
   class Writer(val name: String) extends person
 
+  // Artist class that extends Person
   class Artist(val name: String) extends person
 
+  // Song class that contains different fields related to the CSV inputs
   class Song(val title: String, val description: String, val appear: String, val artist: String, val writer: String, val producer: String, val releaseDate: String, val streak: Int, val position: String) {
     val songTitle: String = title
     val songDescription: String = description
@@ -30,11 +36,13 @@ object Demo {
     var songMaxPosition: String = position
   }
 
+  // Summary class that contains a song title and an artist that has made the song
   class summary(val title: String, val artistName: String) {
     val songTitle: String = title
     val songArtist = new Artist(artistName)
   }
 
+  // Main class of our programm
   def main(args: Array[String]): Unit = {
 
     // Get absolute path from csv file
@@ -58,7 +66,7 @@ object Demo {
       )
     }
     )
-    // Call the user menu
+    // Call the user menu recursively
     panel(allSong)
   }
 
@@ -117,43 +125,6 @@ object Demo {
   }
 
   /**
-   *
-   * @param allSong
-   */
-  def playASong(song: Song) = {
-
-    //simulate the duration of the song
-    var random = new Random()
-    println("Start play " + song.songTitle)
-    // Simulate the play of the song
-    Thread.sleep(random.nextInt())
-  }
-
-  /**
-   *
-   * @param allSong
-   */
-  def playMultipleSong(allSong: List[Song]): Unit = {
-
-    // create the 4 song that will be played together
-    val rand = new Random()
-    val s1 = allSong(rand.nextInt(allSong.length))
-    val s2 = allSong(rand.nextInt(allSong.length))
-    val s3 = allSong(rand.nextInt(allSong.length))
-    val s4 = allSong(rand.nextInt(allSong.length))
-
-    // play all song at the same time and wait until they all finish
-    val t1 = Future(playASong(s1))
-    val t2 = Future(playASong(s2))
-    val t3 = Future(playASong(s3))
-    val t4 = Future(playASong(s4))
-
-    // wait until all song finish
-    Thread.sleep(10000L)
-
-  }
-
-  /**
    * 1) Get and print all songs that an artist has made
    *
    * @param allSong list of songs
@@ -176,7 +147,7 @@ object Demo {
    * @param allSong list of songs
    */
   def sortByStreakSize(allSong: List[Song]): Unit = {
-    // Sort the list by streak value
+    // Sort the list by streak value reversed
     val sortedList = allSong.sortBy(s => s.streak).reverse
     // Print the songs sorted
     sortedList.foreach(s => println(s"${BLUE}" + s.songTitle + " | " + s.streak + s"${RESET}"))
@@ -221,7 +192,7 @@ object Demo {
    * @param allSong list of songs
    */
   def sortSongAfterADate(allSong: List[Song]): Unit = {
-    // Filter the list and take only songs appeared after 1990
+    // Filter the list and take only songs appeared after 2000
     val songsFiltered = allSong.filter(s => try {
       s.releaseDate.substring(s.releaseDate.length - 4, s.releaseDate.length).toInt > 2000
     }
@@ -361,7 +332,6 @@ object Demo {
     })
     // Change the list of songs with new values
     return allSong
-    //    allSong ::: newSong :: Nil
   }
 
   /**
@@ -377,17 +347,46 @@ object Demo {
     return tempList
   }
 
+
   /**
-   * Get and print all song that a producer has produce
-   *
-   * @param allSong list of songs
+   *  Method called by playMultipleSong to print the randomly select the duration of a song and print it
+   * @param allSong list of all songs
    */
-  def getAllSongForAProducer(allSong: List[Song]): Unit = {
-    val producerName = readLine("Input name of the producer: ")
-    allSong.filter(s => s.songProducer.name.equals(producerName))
-    allSong.foreach(s => println(s.songTitle))
+  def playASong(song: Song) = {
+    // Simulate the duration of the song
+    var random = new Random()
+    println("Start play " + song.songTitle)
+    // Simulate the play of the song
+    val time = random.nextInt(5000)
+    println("... Playing for " + time + " ms")
+    Thread.sleep(time)
+
   }
 
+  /**
+   * Chose 4 songs in the list and play them at the same time using Futures
+   * @param allSong list of all songs
+   */
+  def playMultipleSong(allSong: List[Song]): Unit = {
+
+    val rand = new Random()
+    // Chose randomly a number between between the list length
+    // Create the 4 song that will be played together
+    val s1 = allSong(rand.nextInt(allSong.length))
+    val s2 = allSong(rand.nextInt(allSong.length))
+    val s3 = allSong(rand.nextInt(allSong.length))
+    val s4 = allSong(rand.nextInt(allSong.length))
+
+    // Play all song at the same time and wait until they all finish
+    val t1 = Future(playASong(s1))
+    val t2 = Future(playASong(s2))
+    val t3 = Future(playASong(s3))
+    val t4 = Future(playASong(s4))
+
+    // Wait until all song finish
+    Thread.sleep(10000L)
+
+  }
 
   /**
    * Create the list made of summarize instead of full song
